@@ -1,5 +1,18 @@
 let userScore = 0;
 let computerScore = 0;
+let drawScore = 0;
+let userChoice = "";
+let computerChoice = "";
+const rockBtn = document.getElementById("rock");
+const paperBtn = document.getElementById("paper");
+const scissorsBtn = document.getElementById("scissors");
+const resetBtn = document.getElementsByClassName("resetBtn");
+const user = document.getElementById("user");
+const computer = document.getElementById("computer");
+const draw = document.getElementById("draw");
+const userLabel = document.getElementById("userLabel");
+const computerLabel = document.getElementById("computerLabel");
+const drawLabel = document.getElementById("drawLabel");
 
 // randomly pick for the computer
 function getComputerChoice() {
@@ -7,68 +20,81 @@ function getComputerChoice() {
   return rpsArray[Math.floor(Math.random() * rpsArray.length)];
 }
 
-// get user selection from prompt, make sure its valid if not repeat
-function getUserChoice() {
-  let userChoice = prompt("Enter rock, paper or scissors: ");
-  let accepted = false;
-  userChoice = userChoice.toLowerCase();
-  while (!accepted) {
-    switch (userChoice) {
-      case "rock":
-        accepted = true;
-        return "rock";
-      case "paper":
-        accepted = true;
-        return "paper";
-      case "scissors":
-        accepted = true;
-        return "scissors";
-      default:
-        accepted = false;
-        userChoice = prompt("Please try again...ROCK..PAPER..OR..SCISSORS!");
-    }
-  }
+// Add the event listeners
+function initialisation() {
+  rockBtn.addEventListener("click", getUserChoice);
+  paperBtn.addEventListener("click", getUserChoice);
+  scissorsBtn.addEventListener("click", getUserChoice);
+  resetBtn[0].addEventListener("click", resetScores);
 }
 
-function whoIsTheWinner(computerChoice, userChoice) {
-  if (computerChoice === userChoice) return "Draw";
+// Get computer choice, compare to user and return result
+function whoIsTheWinner() {
+  computerChoice = getComputerChoice();
+  if (computerChoice === userChoice) return "draw";
   if (
     (computerChoice === "rock" && userChoice === "scissors") ||
     (computerChoice === "paper" && userChoice === "rock") ||
     (computerChoice === "scissors" && userChoice === "paper")
   ) {
-    return "Computer Wins";
+    return "computer";
   } else {
-    return "User Wins";
+    return "user";
   }
 }
 
-function playRound() {
-  let computerChoice = getComputerChoice();
-  let userChoice = getUserChoice();
-  console.log(`The computer choose: ${computerChoice}`);
-  console.log(`The user choose: ${userChoice}`);
-  let result = whoIsTheWinner(computerChoice, userChoice);
-  if (result === "User Wins") userScore++;
-  if (result === "Computer Wins") computerScore++;
-  console.log(`Result: ${result}`);
-  console.log("Score:");
-  console.log(`User: ${userScore}`);
-  console.log(`Computer: ${computerScore}`);
+// Take input from user
+function getUserChoice(e) {
+  userChoice = e.target.id;
+  // now we have input from user we can play
+  letsPlay();
 }
 
-function bestOf() {
-  // number of games that will be played
-  for (let i = 0; i <= 2; i++) {
-    playRound();
+// update the scores
+function letsPlay() {
+  let winner = whoIsTheWinner();
+  switch (winner) {
+    case "draw":
+      drawScore++;
+      setBackGroundColorOfWinner("drawLabel");
+      break;
+    case "computer":
+      computerScore++;
+      setBackGroundColorOfWinner("computerLabel");
+      break;
+    case "user":
+      userScore++;
+      setBackGroundColorOfWinner("userLabel");
+      break;
   }
-
-  // confirm who the winner is
-  if (userScore > computerScore) {
-    console.log("User is a Winner!");
-  } else if (userScore === computerScore) {
-    console.log("It's a draw!");
-  } else console.log("Computer has won");
+  updateFormScores();
 }
 
-bestOf();
+// output the score to the form
+function updateFormScores() {
+  user.innerText = userScore;
+  computer.innerText = computerScore;
+  draw.innerText = drawScore;
+}
+
+// Set all scores to zero
+function resetScores() {
+  userScore = 0;
+  computerScore = 0;
+  drawScore = 0;
+  updateFormScores();
+}
+
+// Identify who won the last game
+function setBackGroundColorOfWinner(winner) {
+  // id's for the following have already be ascertained
+  userLabel.style.backgroundColor = "gainsboro";
+  drawLabel.style.backgroundColor = "gainsboro";
+  computerLabel.style.backgroundColor = "gainsboro";
+  // 'winner' is the label of the winner now we need it's ID
+  const labelToChange = document.getElementById(winner);
+  labelToChange.style.backgroundColor = "grey";
+}
+
+// add event listeners to the buttons
+initialisation();

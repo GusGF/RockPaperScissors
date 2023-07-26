@@ -4,14 +4,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <script src="./rps.js"></script>
+    <title>ROCK, PAPER, SCISSORS GAME</title>
+    <link rel="stylesheet" href="./index.css">
 </head>
 
 <body>
-    Have not updated to run on a webpage yet soz :(
+    <div class="scoreSection">
+        <div class="scoreLabels">
+            <label id="userLabel">User:</label>
+            <label id="computerLabel">Computer:</label>
+            <label id="drawLabel">Draws:</label>
+        </div>
+        <div class="scores">
+            <div id="user"></div>
+            <div id="computer"></div>
+            <div id="draw"></div>
+        </div>
+    </div>
 
+    <div class="buttonDIV">
+        <button id="rock">ROCK</button>
+        <button id="paper">PAPER</button>
+        <button id="scissors">SCISSORS</button>
+    </div>
 
+    <div class="reset">
+        <button class="resetBtn">
+            Reset
+        </button>
+    </div>
+
+    <script src="./rps.js"></script>
 </body>
 
 </html>
