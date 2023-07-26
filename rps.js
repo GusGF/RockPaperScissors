@@ -3,6 +3,7 @@ let computerScore = 0;
 let drawScore = 0;
 let userChoice = "";
 let computerChoice = "";
+let gameCntr = 0;
 const rockBtn = document.getElementById("rock");
 const paperBtn = document.getElementById("paper");
 const scissorsBtn = document.getElementById("scissors");
